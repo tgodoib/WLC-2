@@ -1,0 +1,6 @@
+.pio
+CMakeListsPrivate.txt
+cmake-build-*/ 
+.idea/
+.DS_Store
+include/Secrets.h
