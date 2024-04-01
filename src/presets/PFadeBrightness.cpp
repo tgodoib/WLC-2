@@ -28,8 +28,6 @@ void PFadeBrightness::loop() {
     if (millis() - lastUpdate < duration / steps) return;
     lastUpdate = millis();
 
-//    LOG::debug("PFadeBrightness", "looping");
-
     RENDER::setBrightness(from + (to - from) * step / steps);
     RENDER::update();
     step++;

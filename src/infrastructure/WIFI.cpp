@@ -1,5 +1,5 @@
 #include "infrastructure/WIFI.h"
-#include "ESP8266WiFi.h";
+#include <WiFi.h>
 #include "infrastructure/LOG.h"
 
 void WIFI::connect() {

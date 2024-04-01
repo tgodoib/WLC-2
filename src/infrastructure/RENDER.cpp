@@ -11,10 +11,6 @@ void RENDER::init() {
 
 void RENDER::update() {
     if (!disable_update) {
-        LOG::debug("RENDER", String(getBrightness()));
-        LOG::debug("render v", String(led_arr[0].v));
-
-
         hsv2rgb_rainbow(led_arr, led_arr_rgb, LED_COUNT);
         nscale8_video(led_arr_rgb, LED_COUNT, getBrightness());
         FastLED.show();
@@ -39,7 +35,6 @@ CHSV* RENDER::getArr() {
 }
 
 void RENDER::setBrightness(uint8_t b) {
-//    LOG::debug("RENDER", "setting brightness " + String(b));
     brightness = b;
 //    FastLED.setBrightness(b);
 }

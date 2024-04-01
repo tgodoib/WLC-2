@@ -11,10 +11,6 @@
 
 class MQTT {
 private:
-    static BearSSL::X509List cert;
-    static BearSSL::X509List client_crt;
-    static BearSSL::PrivateKey key;
-
     static WiFiClientSecure wifiClient;
     static PubSubClient mqttClient;
 

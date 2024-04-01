@@ -1,9 +1,5 @@
 #include "controllers/MQTT.h"
 
-BearSSL::X509List MQTT::cert(cacert);
-BearSSL::X509List MQTT::client_crt(client_cert);
-BearSSL::PrivateKey MQTT::key(privkey);
-
 WiFiClientSecure MQTT::wifiClient;
 PubSubClient MQTT::mqttClient(wifiClient);
 
@@ -13,8 +9,9 @@ time_t MQTT::lastReconnectTry = 0;
 void MQTT::init() {
     MQTT::configNTP();
 
-    wifiClient.setTrustAnchors(&cert);
-    wifiClient.setClientRSACert(&client_crt, &key);
+    wifiClient.setCACert(cacert);
+    wifiClient.setCertificate(client_cert);
+    wifiClient.setPrivateKey(privkey);
 
     mqttClient.setServer(MQTT_HOST, 8883);
     mqttClient.setCallback(MQTT::receive);

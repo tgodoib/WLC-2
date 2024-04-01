@@ -1,7 +1,7 @@
 #include "presets/Presets.h"
 
-Preset* PFadeColor::config(void *p) {
-    to = (Preset*) p;
+Preset *PFadeColor::config(void *p) {
+    to = (Preset *) p;
     return this;
 }
 
@@ -11,16 +11,16 @@ void PFadeColor::start() {
 
     std::copy(RENDER::getArr(), RENDER::getArr() + LED_COUNT, from_arr);
     RENDER::pause();
+
     uint8_t tempBrightness = RENDER::getBrightness();
     RENDER::setBrightness(255);
-    LOG::debug("fade color 1 v", String(((PSolid*) to)->getColor().v));
+
     to->start();
-    LOG::debug("fade color 1.2 v", String(((PSolid*) to)->getColor().v));
     to->loop();
-    LOG::debug("fade color 1.3 v", String(((PSolid*) to)->getColor().v));
+
     std::copy(RENDER::getArr(), RENDER::getArr() + LED_COUNT, to_arr);
-    LOG::debug("fade color 2 v", String(to_arr[0].v));
     RENDER::setBrightness(tempBrightness);
+
     RENDER::resume();
 
     lastUpdate = millis();
