@@ -1,4 +1,5 @@
 #include "infrastructure/RENDER.h"
+#include "controllers/HomeKit.h"
 
 CRGB RENDER::led_arr_rgb[LED_COUNT];
 CHSV RENDER::led_arr[LED_COUNT];
@@ -36,6 +37,7 @@ CHSV* RENDER::getArr() {
 
 void RENDER::setBrightness(uint8_t b) {
     brightness = b;
+    HomeKit::reportBrightness(b);
 //    FastLED.setBrightness(b);
 }
 

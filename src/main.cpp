@@ -5,7 +5,7 @@
 #include <FastLED.h>
 #include "infrastructure/RENDER.h"
 #include "controllers/MQTT.h"
-#include "ArduinoOTA.h"
+//#include "controllers/HomeKit.h"
 
 void setup() {
     LOG::init();
@@ -18,19 +18,10 @@ void setup() {
 
     DATA::init();
 
-//    LED::setBrightness(255);
+//    HomeKit::init();
 
     delay(1000);
     FastLED.clear(true);
-
-//    RENDER::fill(CHSV(HUE_PINK, 255, 255));
-//    RENDER::update();
-
-//    LED::setPreset(PresetType::SOLID);
-//    LED::config(new CHSV(HUE_PINK,255,255));
-//    LED::start(false);
-
-//    LED::setBrightness(DATA::getBrightness(), false);
 
     RENDER::setBrightness(DATA::getBrightness());
     LED::setPreset(DATA::getPreset());
@@ -43,5 +34,5 @@ void setup() {
 void loop() {
     LED::loop();
     MQTT::loop();
-//    ArduinoOTA.handle();
+//    HomeKit::loop();
 }

@@ -1,4 +1,5 @@
 #include "presets/Presets.h"
+#include "controllers/HomeKit.h"
 
 void PSolid::start() {
     RENDER::fill(getColor());
@@ -13,6 +14,8 @@ Preset* PSolid::config(void *p) {
 
     char data[3] = {(char)color.h, (char)color.s, (char)color.v};
     DATA::storePresetData(3, data);
+
+    HomeKit::reportColor(&color);
 
     return this;
 }
