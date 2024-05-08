@@ -6,14 +6,12 @@
 #include "infrastructure/RENDER.h"
 
 SpanCharacteristic *FITA_LED::power;
-SpanCharacteristic *FITA_LED::brightness;
 SpanCharacteristic *FITA_LED::H;
 SpanCharacteristic *FITA_LED::S;
 SpanCharacteristic *FITA_LED::V;
 
 FITA_LED::FITA_LED() : Service::LightBulb() {
     power = new Characteristic::On();
-    brightness = new Characteristic::Brightness();
 
     H = new Characteristic::Hue();
     S = new Characteristic::Saturation();
@@ -22,25 +20,48 @@ FITA_LED::FITA_LED() : Service::LightBulb() {
 
 boolean FITA_LED::update() {
     boolean p;
-    uint8_t b;
-    uint8_t v, h, s;
+    int v, h, s;
 
-    h = H->getVal<uint8_t>();
-    s = S->getVal<uint8_t>();
-    v = V->getVal<uint8_t>();
-    b = brightness->getVal<uint8_t>();
-    p = power->getVal();
+    h = H->getNewVal<int>();
+    s = S->getNewVal<int>();
+    v = V->getNewVal<int>();
+    p = power->getNewVal<boolean>();
 
-    if (brightness->updated()) {
-        LED::setBrightness(b);
-    } else if (power->updated()) {
-        LED::setBrightness(p * 100);
+    CHSV newColor = CHSV(0, 0, 0);
+
+    if (power->updated()) {
+        LOG::debug("Homekit", "Power: " + String(p));
+//        LED::setBrightness(p * 100);
     }
 
-    if (H->updated() || S->updated() || V->updated()) {
-        LED::setPreset(PresetType::SOLID);
-        LED::config(new CHSV(h * 255 / 360, s * 255 / 100, v * 255 / 100));
-        LED::start(false);
+    if (V->updated()) {
+        LOG::debug("Homekit", "Brightness: " + String(v));
+//        LED::setBrightness(v, !(H->updated() || S->updated()));
+        newColor.v = v * 255 / 100;
+    }
+
+    if (H->updated() && S->updated()) {
+        LOG::debug("Homekit", "Hue: " + String(h));
+        LOG::debug("Homekit", "Saturation: " + String(s));
+        newColor.h = h * 255 / 360;
+        newColor.s = s * 255 / 100;
+
+//        LED::setPreset(PresetType::SOLID);
+//        LED::config(&newColor);
+//        LED::start();
+    } else {
+        if (H->updated()) {
+            LOG::debug("Homekit", "Hue: " + String(h));
+//            LED::setPreset(PresetType::SOLID);
+//            LED::config(new CHSV(h, S->getVal() * 255 / 100, V->getVal() * 255 / 100));
+//            LED::start();
+        }
+        if (S->updated()) {
+            LOG::debug("Homekit", "Saturation: " + String(s));
+//            LED::setPreset(PresetType::SOLID);
+//            LED::config(new CHSV(H->getVal() * 255 / 360, s, V->getVal() * 255 / 100));
+//            LED::start();
+        }
     }
 
     return true;
@@ -49,10 +70,7 @@ boolean FITA_LED::update() {
 
 void HomeKit::init() {
     homeSpan.begin(Category::Lighting, "Fita LED");
-
-    new SpanAccessory();
-    new Service::AccessoryInformation();
-    new Characteristic::Identify();
+    homeSpan.setLogLevel(1);
 
     new SpanAccessory();
     new Service::AccessoryInformation();
@@ -71,11 +89,11 @@ void HomeKit::reportColor(CHSV *color) {
 }
 
 void HomeKit::reportBrightness(uint8_t brightness) {
-    FITA_LED::brightness->setVal(brightness);
+    FITA_LED::V->setVal(brightness * 100 / 255);
 
     if (brightness == 0) {
-        FITA_LED::power->setVal(0);
+        FITA_LED::power->setVal(false);
     } else {
-        FITA_LED::power->setVal(1);
+        FITA_LED::power->setVal(true);
     }
 }

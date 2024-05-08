@@ -8,6 +8,7 @@
 class DATA {
 public:
     static void init();
+    static void reset();
 
     static void storePreset(PresetType p);
     static PresetType getPreset();

@@ -8,6 +8,7 @@ uint8_t RENDER::brightness = 255;
 
 void RENDER::init() {
     FastLED.addLeds<WS2812B, 2, GRB>(led_arr_rgb, LED_COUNT);
+    LOG::info("RENDER", "Initialized.");
 }
 
 void RENDER::update() {
@@ -35,9 +36,9 @@ CHSV* RENDER::getArr() {
     return led_arr;
 }
 
-void RENDER::setBrightness(uint8_t b) {
+void RENDER::setBrightness(uint8_t b, bool report) {
     brightness = b;
-    HomeKit::reportBrightness(b);
+    if (report) HomeKit::reportBrightness(b);
 //    FastLED.setBrightness(b);
 }
 

@@ -65,7 +65,7 @@ String MQTT::error_code(int MQTTErr) {
 
 void MQTT::connect() {
     LOG::info("MQTT", "Trying to connect...");
-    if (!mqttClient.connect("WLC")) {
+    if (!mqttClient.connect("WLC-ESP32")) {
         LOG::error("MQTT", "Failed to connect. Trying again in 5s.");
         lastReconnectTry = now;
         return;

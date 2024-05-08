@@ -6,11 +6,17 @@
 
 void DATA::init() {
     EEPROM.begin(8);
+    LOG::info("DATA", "Initialized.");
+}
+
+void DATA::reset() {
+    EEPROM.writeByte(0, 0);
+    EEPROM.commit();
 }
 
 void DATA::set(int i, char val) {
-    EEPROM.write(0, 'A');
-    EEPROM.write(i, val);
+    EEPROM.writeChar(0, 'A');
+    EEPROM.writeChar(i, val);
     EEPROM.commit();
 }
 
@@ -45,10 +51,11 @@ void DATA::getPresetData(int size, char *data) {
 }
 
 void DATA::storeBrightness(uint8_t b) {
-    EEPROM.write(1, b);
+    EEPROM.writeByte(1, b);
     EEPROM.commit();
 }
 
 uint8_t DATA::getBrightness() {
+    if (get(0) != 'A') return 255;
     return get(1);
 }

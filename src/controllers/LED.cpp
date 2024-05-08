@@ -11,6 +11,7 @@ void LED::init() {
     enum2Preset[PresetType::SOLID] = new PSolid();
     enum2Preset[PresetType::FADE_COLOR] = new PFadeColor();
     enum2Preset[PresetType::FADE_BRIGHTNESS] = new PFadeBrightness();
+    LOG::info("LED", "Initialized.");
 }
 
 void LED::loop() {

@@ -5,7 +5,7 @@
 #include <FastLED.h>
 #include "infrastructure/RENDER.h"
 #include "controllers/MQTT.h"
-//#include "controllers/HomeKit.h"
+#include "controllers/HomeKit.h"
 
 void setup() {
     LOG::init();
@@ -18,21 +18,22 @@ void setup() {
 
     DATA::init();
 
-//    HomeKit::init();
-
     delay(1000);
     FastLED.clear(true);
 
-    RENDER::setBrightness(DATA::getBrightness());
+    RENDER::setBrightness(DATA::getBrightness(), false);
     LED::setPreset(DATA::getPreset());
     char data[5];
     DATA::getPresetData(5, data);
     LED::getPreset()->restoreData(data);
     LED::start(false);
+
+    HomeKit::init();
 }
 
 void loop() {
+    HomeKit::loop();
+
     LED::loop();
     MQTT::loop();
-//    HomeKit::loop();
 }

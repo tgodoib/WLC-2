@@ -10,7 +10,6 @@
 
 struct FITA_LED : Service::LightBulb {
     static SpanCharacteristic *power;
-    static SpanCharacteristic *brightness;
     static SpanCharacteristic *H;
     static SpanCharacteristic *S;
     static SpanCharacteristic *V;

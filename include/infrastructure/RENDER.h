@@ -23,7 +23,7 @@ public:
 
     static CHSV* getArr();
 
-    static void setBrightness(uint8_t b);
+    static void setBrightness(uint8_t b, bool report = true);
     static uint8_t getBrightness();
 
     static void pause();
